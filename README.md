@@ -35,3 +35,20 @@ e() # заверешние блока комнаты
 import pickle
 mem=pickle.load( open( "SOURCE/_bytes.pick", "rb" ) ) # байт-код прочитан
 ```
+# Условия, команды
+
+Основные:
+```python
+a("Взять книгу","set BOOK","ifset BOOK")
+a("Взять книгу","unset BOOK","ifnot BOOK")
+a("Идти дальше","goto комната2")
+```
+
+Можно комбинировать через ";":
+a("Взять книгу","set BOOK;unset HANDFREE;goto room4","ifset BOOK;ifnot VISITED4")
+
+Алиасы:
+```python
+a("Идти дальше","next")
+a("Идти дальше","return")
+```
