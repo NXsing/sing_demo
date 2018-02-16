@@ -55,3 +55,8 @@ a("Идти дальше","return")
 import pickle
 mem=pickle.load( open( "SOURCE/_bytes.pick", "rb" ) ) # байт-код прочитан
 ```
+
+## Контакты для связи
+
+1. Почта: x_n хатико) ro.ru
+2. NX на Discord-канале ifrus: https://discordapp.com/invite/X86kkzM
