@@ -45,7 +45,10 @@ a("Идти дальше","goto комната2")
 ```
 
 Можно комбинировать через ";":
+```
+python
 a("Взять книгу","set BOOK;unset HANDFREE;goto room4","ifset BOOK;ifnot VISITED4")
+```
 
 Алиасы:
 ```python
