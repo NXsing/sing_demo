@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <link href="https://bootswatch.com/4/darkly/bootstrap.min.css" rel="stylesheet">
+
+<!-- можно вставлять и использовать стильные шрифты с google fonts -->
+<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">
+
+<style type="text/css">
+body {
+   background-image: url("https://isardasorensen.files.wordpress.com/2016/11/tp-pretty-pink-sunset-nyc-11-12-16.jpg");
+   background-size: cover;
+    background-repeat: no-repeat;
+   background-color: #000000;
+}
+</style>
+
+<!-- стиль, фон, видео(ради звука)-->
+
+  </head>
+  <body>
+    <h1 style="color:white; font-family: 'Nanum Pen Script', cursive; font-size:55px"><i>Hello world!</i></h1>
+    
+    <div class="container">
+		<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<div class="well" id="text" style="font-size:16px; font-family:serif;">...<br>jhkjh</div>
+					
+					<div style="margin-top: 0.2cm;" class="list-group" id="buttons">
+						<button type="button" id="ppp" class="list-group-item">Ipsa scientia potestas est</button>
+					</div>
+				</div>
+				<div class="col-md-1"></div>
+		</div>
+	</div>
+	
+
+	<iframe src="https://www.youtube.com/embed/w2f4YsKGUDo?autoplay=1&mute=0&volume=100&showinfo=0" width="1" height="1" frameborder="0" allowfullscreen></iframe>
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://yastatic.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+<script src="HTML/unbase64.js"></script>
+<script src="HTML/_bytes.js"></script>
+<script>    
+	var instr=[
+	    "rest",
+		"nop",
+		"setroom",
+		"condret",
+		"setsequ",
+		"waitkey",
+		"onv",
+		"offv",
+		"condtxt",
+		"condact",
+		"condjmp",
+		"condset",
+		"condunset",
+		"setname",
+		"eq",
+		"condmes"];
+		var i=128;
+		var nameXcode=new Map();
+		var codeXname=new Map();
+		for(x in instr){
+			var name = instr[x];
+			nameXcode.set(name,i);
+		    codeXname.set(i,name);
+			i+=4;
+		}
+	//var mem
+    var ptr = 0;
+    /////////////////////////////////////////////////
+    
+    var CONDREG=0
+    var MEMREG=0;
+    
+    var VISITED=[];
+	var ASTACK=[];
+	
+	var RUNNING=true
+	
+	var KEY;
+	
+	var TXTS;
+	var ACTS;
+	
+	function readstrz(MEM, PTR) {
+		var sz=0
+		while(true){
+			if(MEM[PTR+sz]==0)
+			{
+				break
+			}
+			else
+			{
+				sz+=1;
+			}
+		}
+        
+		var arrnext =  new Uint8Array(sz);
+		for(var i=0;i<sz;i++){
+			arrnext[i]=MEM[PTR+i];
+		}
+        return unicode(arrnext);
+    }
+	
+    function next() {
+		var b = mem[ptr];
+		console.log(ptr+": "+codeXname.get(b));
+		
+		//переделать в nameXcode и сравнение чисел
+		//упреждающее считывание в MEMREG
+		
+		if (codeXname.get(b)=="rest"){
+			CONDREG = 1
+			ptr+=1
+			return
+		}
+		if (codeXname.get(b)=="nop"){
+			ptr+=1
+			return
+		}
+		
+		if (codeXname.get(b)=="condjmp"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			if(CONDREG==1){
+				ptr=MEMREG
+				console.log("going "+ptr);
+			} else {
+				ptr+=4
+			}
+			
+			return
+		}
+		
+		if (codeXname.get(b)=="condset"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			
+			if(CONDREG==1)
+				mem[MEMREG]=1
+			
+			ptr+=4
+			return
+		}
+		
+		if (codeXname.get(b)=="condunset"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			
+			if(CONDREG==1)
+				mem[MEMREG]=0
+			
+			ptr+=4
+			return
+		}
+		if (codeXname.get(b)=="condtxt"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			if (CONDREG==1){
+				console.log(">> "+readstrz(mem,MEMREG))
+				TXTS.push(readstrz(mem,MEMREG))
+			}
+			ptr+=4
+			return
+		}
+		
+		if (codeXname.get(b)=="condmes"){ //событийное добавление текста
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			if (CONDREG==1){
+				console.log(">> "+readstrz(mem,MEMREG))
+				$("#text").append(readstrz(mem,MEMREG))
+			}
+			ptr+=4
+			return
+		}
+		
+		if (codeXname.get(b)=="offv"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			if(mem[MEMREG]==1){
+				CONDREG=CONDREG&0
+			} else {
+				CONDREG=CONDREG&1
+			}
+			ptr+=4
+			return
+		}
+		if (codeXname.get(b)=="onv"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			if(mem[MEMREG]==1){
+				CONDREG=CONDREG&1
+			} else {
+				CONDREG=CONDREG&0
+			}
+			ptr+=4
+			return
+		}
+		
+		if (codeXname.get(b)=="condact"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			if(CONDREG==1){
+				console.log("A: "+readstrz(mem,MEMREG)+" "+MEMREG)
+				ACTS.push(readstrz(mem,MEMREG))
+				ASTACK.push(MEMREG)
+			}
+			ptr+=4
+			return	
+		}
+		if (codeXname.get(b)=="condret"){
+			if(CONDREG==1)
+			{
+				ptr=VISITED[VISITED.length-2]
+				TXTS=[]
+				return
+			} else {
+				ptr+=1
+				return
+			}
+		}
+		
+		if (codeXname.get(b)=="setname"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			console.log("==",readstrz(mem,MEMREG),"==")
+			
+			TXTS=[]
+			ACTS=[]
+			
+			VISITED.push(ptr)
+			
+			ptr+=4
+			ASTACK=[]
+			return
+		}
+		
+		if (codeXname.get(b)=="waitkey"){
+			RUNNING=false
+			ptr+=1
+			return
+		}
+
+		if (codeXname.get(b)=="eq"){
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			
+			if(MEMREG==ASTACK[KEY-1]){
+				
+				CONDREG=1
+			}
+			else{
+				CONDREG=0
+			}
+			ptr+=4
+			return
+		}
+		
+	}
+	
+
+	
+	function update(){
+		while(RUNNING){
+			next();
+		}
+	
+		$('#text').empty();
+		
+		for(T in TXTS){
+			$('#text').append(TXTS[T]);
+		}
+		TXTS=[]
+	
+		$('#buttons').empty();
+		
+		for(A in ACTS){
+			var txt=ACTS[A];
+			$('#buttons').append("<button type=\"button\" class=\"btn btn-outline-warning\" id=\"ppp"+A+"\" class=\"list-group-item\">"+txt+"</button>");
+		}
+		
+		$('#ppp0').on('click', function () {	
+		    RUNNING=true
+		    KEY=1
+		    update();
+		});
+		$('#ppp1').on('click', function () {	
+			RUNNING=true
+		    KEY=2
+		    update();
+		});
+		$('#ppp2').on('click', function () {	
+			RUNNING=true
+		    KEY=3
+		    update();
+		});
+		$('#ppp3').on('click', function () {	
+			RUNNING=true
+		    KEY=4
+		    update();
+		});
+
+	}
+update();
+</script>
+  </body>
+</html>
