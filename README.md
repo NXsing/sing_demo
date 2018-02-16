@@ -65,6 +65,7 @@ mem=pickle.load( open( "SOURCE/_bytes.pick", "rb" ) ) # байт-код проч
 <iframe src="https://www.youtube.com/embed/w2f4YsKGUDo?autoplay=1&mute=0&volume=100&showinfo=0" width="1" height="1" frameborder="0" allowfullscreen></iframe>
 ```
 Строка `?autoplay=1&mute=0&volume=100&showinfo=0` дбавлена как раз для автопроигрывания. `width="1" height="1"` делают видео размером с 1 пиксель(невидимым на странице). Идентификатор `w2f4YsKGUDo` отвечает за адрес ролика - именно его и нужно менять для смены звукового ряда.
+
 4. Возможность использования веб-шрифтов(напр. google fonts). Их использование описано на https://fonts.google.com/, но как правило это подключение стиля:```<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">``` и указание стиля: ```<h1 style="font-family: 'Nanum Pen Script', cursive"><i>Hello world!</i></h1>```.
 
 ## Контакты для связи
