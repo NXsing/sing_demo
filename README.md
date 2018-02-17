@@ -61,7 +61,9 @@ mem=pickle.load( open( "SOURCE/_bytes.pick", "rb" ) ) # байт-код проч
 1. Возможность вставки тегов html, включая iframe(т.е. можно вставлять видео с youtube), img в t()
 2. Возможность использования веб-шрифтов(напр. google fonts). Их использование описано на https://fonts.google.com/, но как правило это подключение стиля:```<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">``` и указание стиля: ```<h1 style="font-family: 'Nanum Pen Script', cursive"><i>Hello world!</i></h1>```.
 3. Возможность добавления доп.функционала на js, путем вставки тега <script>j++</script>, что позволяет, напр. изменить переменную или вызвать функцию при посещении комнаты. Для вызова кода на js, при выборе действия, есть команда "mes <script>j++</script>"(внутри без ковычек - сразу тег)
-4. Можно загрузить видео с youtube фоново(тогда оно используется в качестве источника только звука). В index.html это следующая строка:
+
+Возможности интерфейса:
+1. Можно загрузить видео с youtube фоново(тогда оно используется в качестве источника только звука). В index.html это следующая строка:
 ```html
 <iframe src="https://www.youtube.com/embed/w2f4YsKGUDo?autoplay=1&mute=0&volume=100&showinfo=0" width="1" height="1" frameborder="0" allowfullscreen></iframe>
 ```
