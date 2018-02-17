@@ -1,5 +1,8 @@
 # Simple interactive novel generator. Demo
 
+Демо-видео:
+https://youtu.be/VKieqWdUf4A?t=30
+
 ## Запуск демки
 1. Скачать(верхний правый угол страницы, зеленая кнопка)
 2. Запустить index.html
