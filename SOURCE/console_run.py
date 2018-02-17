@@ -24,6 +24,7 @@ add("condset", 1,3)
 add("condunset", 1,3)
 add("setname", 1,3)
 add("eq", 1,3)
+add("condmes", 1,3)
 
 nameXcode={}
 codeXname={}
@@ -103,6 +104,14 @@ while True:
 			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
 			if CONDREG==1:
 				mem[MEMREG]=1
+			ptr+=4
+			continue
+			
+		if codeXname[b]=="condmes": # условный вывод сообщения при нажатии кнопки
+			MEMREG = mem[ptr+1]*256*256 + mem[ptr+2]*256 + mem[ptr+3]
+			
+			if CONDREG==1:
+				print(readstrz(mem,MEMREG))
 			ptr+=4
 			continue
 			
