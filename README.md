@@ -1,6 +1,7 @@
 # Simple interactive novel generator. Demo
 
 Демо-видео:
+
 https://youtu.be/VKieqWdUf4A?t=30
 
 ## Запуск демки
