@@ -1,14 +1,14 @@
 # Simple interactive novel generator. Demo
 
-Демо-видео:
-
-https://youtu.be/VKieqWdUf4A?t=30
-
 ## Запуск демки
 1. Скачать(верхний правый угол страницы, зеленая кнопка)
 2. Запустить index.html
 
 Основной исходник - это `main.py`.
+
+Демо-видео:
+
+https://youtu.be/VKieqWdUf4A?t=30
 
 ## Базовый проект, для начала
 https://github.com/NXsing/sing_basic
